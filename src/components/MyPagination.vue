@@ -66,7 +66,7 @@
 <script>
 export default {
   name: 'MyPagination',
-  props: ['totalItems', 'totalPages', 'allPages'],
+  props: ['totalPages'],
   data () {
     return {
       pageNumber: 1,
@@ -109,15 +109,14 @@ export default {
         } else if (last3.includes(this.pageNumber)) {
           shortenArr = last5
         } else {
-          shortenArr = totalPages.slice(this.pageNumber - 2, this.pageNumber + 3)
+          shortenArr = totalPages.slice(this.pageNumber - 3, this.pageNumber + 2)
         }
         this.visibleNumbers = shortenArr
         this.showDots = true
       } else {
-        this.visibleNumbers = this.totalPages
+        this.visibleNumbers = Array.from({ length: this.totalPages }, (_, i) => i + 1)
         this.showDots = false
       }
-      console.log('this.visibleNumbers: ', this.visibleNumbers)
     },
     isBtnVIsible (item) {
       return this.visibleNumbers.includes(item)
@@ -135,7 +134,7 @@ export default {
     }
   },
   mounted () {
-
+    this.shortenPaginationList()
   }
   // props: ['pageNumber']
 }

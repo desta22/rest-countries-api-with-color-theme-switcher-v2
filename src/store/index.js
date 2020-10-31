@@ -1,72 +1,58 @@
 import axios from 'axios'
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { transformCountriesList } from '../helper.js'
 
 Vue.use(Vuex)
-function chunkArray (arr, chunkSize) {
-  var myArray = [...arr]
-  var results = []
-
-  while (myArray.length) {
-    results.push(myArray.splice(0, chunkSize))
-  }
-
-  return results
-}
 export default new Vuex.Store({
   state: {
-    allCountrise: []
+    allCountrise: [],
+    regionCountrise: []
   },
+
   getters: {
     getAllCountriesChunks: (state) => (perPage) => {
-      const all = state.allCountrise
-      const countriesData = {
-        totalItems: 0,
-        totalPages: 0,
-        perPage: 0,
-        items: []
-      }
-      countriesData.totalItems = all.length
-      countriesData.perPage = perPage
-      countriesData.items = chunkArray(all, perPage)
-      countriesData.totalPages = countriesData.items.length
-
-      return countriesData
+      return transformCountriesList(state.allCountrise, perPage)
+    },
+    grtRegCountriseChunks: (state) => (perPage) => {
+      return transformCountriesList(state.regionCountrise, perPage)
+    },
+    getTest: (state) => (x) => {
+      return x
     },
     getAllCountries: state => {
       return state.allCountrise
-    },
-    getAllCountriesChunks2: state => {
-      const all = state.allCountrise
-      const countriesData = {
-        totalItems: 0,
-        totalPages: 0,
-        perPage: 0,
-        items: []
-      }
-      countriesData.totalItems = all.length
-      countriesData.perPage = 8
-      countriesData.items = chunkArray(all, 8)
-      countriesData.totalPages = countriesData.items.length
-
-      return countriesData
     }
   },
+
   mutations: {
     GET_ALL_COUNTRIES (state, data) {
       state.allCountrise = data.map((c, index) => {
         c.index = index
         return c
-        // console.log(c)
+      })
+    },
+    GET_REGION_COUNTRIES (state, data) {
+      state.regionCountrise = data.map((c, index) => {
+        c.index = index
+        return c
       })
     }
   },
+
   actions: {
     getAllCountries ({ commit }) {
       axios.get('https://restcountries.eu/rest/v2/all')
         .then((res) => {
-          // console.log(res.data)
           commit('GET_ALL_COUNTRIES', res.data)
+        }).catch((err) => {
+          console.log(err)
+        })
+    },
+    grtRegionCountrise ({ commit }, slug) {
+      axios.get('https://restcountries.eu/rest/v2/region/' + slug)
+        .then((res) => {
+          commit('GET_REGION_COUNTRIES', res.data)
         }).catch((err) => {
           console.log(err)
         })
