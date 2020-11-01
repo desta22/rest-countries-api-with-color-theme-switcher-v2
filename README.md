@@ -1,6 +1,10 @@
 # rest countries api with color theme switcher v2
 JavaScript framework/library used: vuejs
 
+### My solution
+https://rest-countries-api-with-color-theme-switcher-v2.vercel.app/
+
+
 ## Project setup
 ```
 npm install
