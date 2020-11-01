@@ -23,9 +23,9 @@ strong{
   margin: 0 auto;
   max-width: 100%;
   padding: 0 30px;
-  @include mq('xs') {
-    max-width: 540px;
-  }
+  // @include mq('xs') {
+  //   max-width: 540px;
+  // }
   @include mq('md') {
     padding: 0;
     max-width: 720px;

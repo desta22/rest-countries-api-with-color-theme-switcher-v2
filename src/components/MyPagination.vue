@@ -2,32 +2,38 @@
   <div class="pagination__sec">
     <!-- <p>Pagination totalPages: {{totalPages}}</p>
     <p>Pagination pageNumber: {{pageNumber}}</p> -->
+    <!-- List of countries -->
+    <slot
+      name="data"
+      :pageNumber="pageNumber"
+    />
     <p class="pagination__desc">Current page {{pageNumber}} of {{totalPages}} pages</p>
     <div class="pagination__row">
       <div class="pagination">
-        <!-- First Btn -->
-        <button
-          :disabled="pageNumber <= 1"
-          @click="toFirstPage"
-          class="pagination__btn first"
-        >
-          <fa-icon
-            class="pagination__btn-icon"
-            :icon="['fas', 'angle-double-left']"
-          />
-        </button>
-
-        <!-- Previouse Btn -->
-        <button
-          :disabled="pageNumber <= 1"
-          @click="toPreviousePage"
-          class="pagination__btn prev"
-        >
-          <fa-icon
-            class="pagination__btn-icon"
-            :icon="['fas', 'arrow-left']"
-          />
-        </button>
+        <span class="less-btns">
+          <!-- First Btn -->
+          <button
+            :disabled="pageNumber <= 1"
+            @click="toFirstPage"
+            class="pagination__btn first"
+          >
+            <fa-icon
+              class="pagination__btn-icon"
+              :icon="['fas', 'angle-double-left']"
+            />
+          </button>
+          <!-- Previouse Btn -->
+          <button
+            :disabled="pageNumber <= 1"
+            @click="toPreviousePage"
+            class="pagination__btn prev"
+          >
+            <fa-icon
+              class="pagination__btn-icon"
+              :icon="['fas', 'arrow-left']"
+            />
+          </button>
+        </span>
 
         <!-- Dots -->
         <span
@@ -41,16 +47,18 @@
         </span>
 
         <!-- Number Btns -->
-        <span
-          class="pagination__number"
-          v-for="(item, index) in totalPages"
-          :key="index"
-        >
-          <button
-            v-if="isBtnVIsible(item)"
-            @click="pageNumber = index + 1"
-            :class="['pagination__btn', 'number', pageNumber === index + 1 ? 'active' : '' ] "
-          >{{index + 1}}</button>
+        <span class="pagination__numbers">
+          <span
+            class="pagination__number"
+            v-for="(item, index) in totalPages"
+            :key="index"
+          >
+            <button
+              v-if="isBtnVIsible(item)"
+              @click="pageNumber = index + 1"
+              :class="['pagination__btn', 'number', pageNumber === index + 1 ? 'active' : '' ] "
+            >{{index + 1}}</button>
+          </span>
         </span>
 
         <!-- Dots -->
@@ -63,38 +71,33 @@
             :icon="['fas', 'ellipsis-h']"
           />
         </span>
+        <span class="more-btns">
+          <!-- Next Btn -->
+          <button
+            :disabled="pageNumber >= totalPages"
+            @click="toPNextPage"
+            class="pagination__btn next"
+          >
+            <fa-icon
+              class="pagination__btn-icon"
+              :icon="['fas', 'arrow-right']"
+            />
+          </button>
 
-        <!-- Next Btn -->
-        <button
-          :disabled="pageNumber >= totalPages"
-          @click="toPNextPage"
-          class="pagination__btn next"
-        >
-          <fa-icon
-            class="pagination__btn-icon"
-            :icon="['fas', 'arrow-right']"
-          />
-        </button>
-
-        <!-- Last Btn -->
-        <button
-          :disabled="pageNumber >= totalPages"
-          @click="toLastPage"
-          class="pagination__btn last"
-        >
-          <fa-icon
-            class="pagination__btn-icon"
-            :icon="['fas', 'angle-double-right']"
-          />
-        </button>
+          <!-- Last Btn -->
+          <button
+            :disabled="pageNumber >= totalPages"
+            @click="toLastPage"
+            class="pagination__btn last"
+          >
+            <fa-icon
+              class="pagination__btn-icon"
+              :icon="['fas', 'angle-double-right']"
+            />
+          </button>
+        </span>
       </div>
     </div>
-
-    <!-- List of countries -->
-    <slot
-      name="data"
-      :pageNumber="pageNumber"
-    />
   </div>
 </template>
 
@@ -209,8 +212,8 @@ export default {
   color: var(--color-text);
   border: 1px solid var(--color-text);
   background-color: var(--color-bg);
-  margin-bottom: 10px;
-  margin-right: 10px;
+  margin: 5px;
+
   &.active {
     background-color: var(--color-text);
     color: var(--color-bg);
@@ -238,7 +241,9 @@ export default {
   &.number {
   }
 }
-
+.pagination__numbers {
+  display: flex;
+}
 .pagination__number {
   display: none;
   @include mq("sm") {
@@ -253,6 +258,28 @@ export default {
 
   @include mq("md") {
     display: block;
+  }
+}
+.less-btns,
+.more-btns {
+  display: flex;
+}
+@media only screen and (max-width: 600px) {
+  .pagination {
+    display: grid;
+    grid-template-areas:
+      "numbers numbers"
+      "less more";
+  }
+  .pagination__numbers {
+    grid-area: numbers;
+  }
+  .less-btns {
+    grid-area: less;
+  }
+  .more-btns {
+    grid-area: more;
+    justify-content: flex-end;
   }
 }
 </style>

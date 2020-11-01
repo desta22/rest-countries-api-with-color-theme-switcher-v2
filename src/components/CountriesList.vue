@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="country-list">
 
     <!-- <p>pageNumber : {{pageNumber}}</p>
     <p>totalItems : {{countries.totalItems}}</p>
@@ -28,6 +28,9 @@ export default {
 </script>
 
 <style lang="scss">
+.country-list{
+  margin-bottom: 60px;
+}
 .country-list__grid {
   display: grid;
   grid-auto-rows: 1fr;
