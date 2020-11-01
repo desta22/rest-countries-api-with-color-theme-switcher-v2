@@ -1,4 +1,5 @@
-# country-pagination
+# rest countries api with color theme switcher v2
+JavaScript framework/library used: vuejs
 
 ## Project setup
 ```
@@ -15,13 +16,14 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## CHALLENGE
+https://www.frontendmentor.io/challenges/rest-countries-api-with-color-theme-switcher-5cacc469fec04111f7b848ca
+
+# Frontend Mentor - REST Countries API with color theme switcher
 
 
-https://youtu.be/M033S_-uHkQ?t=1468
+
+
+
+
