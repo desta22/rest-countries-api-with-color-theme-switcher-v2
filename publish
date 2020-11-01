@@ -1,0 +1,16 @@
+<?php
+
+$branch = trim(shell_exec('git rev-parse --abbrev-ref HEAD'));
+
+shell_exec('git push origin '.$branch);
+
+if (shell_exec('git pull origin master --no-ff') != 0) {
+	fwrite(STDERR, "Git merge failed. Publishing aborted."); exit;
+}
+
+shell_exec('git checkout master');
+shell_exec('git merge '.$branch.' --no-ff');
+shell_exec('git push origin master');
+shell_exec('git checkout '.$branch);
+
+fwrite(STDOUT, "\n----- Publishing $branch successful -----\n\n");
