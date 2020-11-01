@@ -1,11 +1,6 @@
 <template>
   <div class="region">
-    Region
-
-    <!-- <div v-if="grtRegCountrise.totalItems > 0">{{grtRegCountrise}}</div> -->
-    <!-- {{grtRegCountrise}} -->
-    <!-- {{$store.state.regionCountrise}} -->
-
+    <ListHeader></ListHeader>
     <MyPagination :totalPages="grtRegCountrise.totalPages">
       <template #data="{pageNumber}">
         <CountriesList
@@ -21,6 +16,7 @@
 <script>
 import CountriesList from '../components/CountriesList.vue'
 import MyPagination from '@/components/MyPagination.vue'
+import ListHeader from '@/components/ListHeader.vue'
 export default {
   name: 'Region',
   data () {
@@ -30,7 +26,8 @@ export default {
   },
   components: {
     CountriesList,
-    MyPagination
+    MyPagination,
+    ListHeader
   },
   mounted () {
     this.$store.dispatch('grtRegionCountrise', this.$route.params.slug)

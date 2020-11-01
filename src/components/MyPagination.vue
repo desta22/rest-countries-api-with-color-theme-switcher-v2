@@ -1,61 +1,96 @@
 <template>
-  <div>
-    <p>Pagination totalPages: {{totalPages}}</p>
-    <p>Pagination pageNumber: {{pageNumber}}</p>
-    <div class="pagination-row">
-      <!-- First Btn -->
-      <button
-        :disabled="pageNumber <= 1"
-        @click="toFirstPage"
-        class="btn btn-secondary mx-1 pagination-btn"
-      > &lt;&lt; </button>
-
-      <!-- Previouse Btn -->
-      <button
-        :disabled="pageNumber <= 1"
-        @click="toPreviousePage"
-        class="btn btn-secondary mx-1 pagination-btn"
-      > &#8592; </button>
-
-      <!-- Dots -->
-      <span
-        v-if="showDots"
-        class="pagination__dots"
-      > --- </span>
-
-      <!-- Number Btns -->
-      <span
-        v-for="(item, index) in totalPages"
-        :key="index"
-      >
+  <div class="pagination__sec">
+    <!-- <p>Pagination totalPages: {{totalPages}}</p>
+    <p>Pagination pageNumber: {{pageNumber}}</p> -->
+    <p class="pagination__desc">Current page {{pageNumber}} of {{totalPages}} pages</p>
+    <div class="pagination__row">
+      <div class="pagination">
+        <!-- First Btn -->
         <button
-          v-if="isBtnVIsible(item)"
-          @click="pageNumber = index + 1"
-          :class="['btn', 'btn-secondary',  'mx-1', 'mb-1', 'pagination-btn', pageNumber === index + 1 ? 'active' : '' ] "
-        >{{index + 1}}</button>
-      </span>
+          :disabled="pageNumber <= 1"
+          @click="toFirstPage"
+          class="pagination__btn first"
+        >
+          <fa-icon
+            class="pagination__btn-icon"
+            :icon="['fas', 'angle-double-left']"
+          />
+        </button>
 
-      <!-- Dots -->
-      <span
-        v-if="showDots"
-        class="pagination__dots"
-      > --- </span>
+        <!-- Previouse Btn -->
+        <button
+          :disabled="pageNumber <= 1"
+          @click="toPreviousePage"
+          class="pagination__btn prev"
+        >
+          <fa-icon
+            class="pagination__btn-icon"
+            :icon="['fas', 'arrow-left']"
+          />
+        </button>
 
-      <!-- Next Btn -->
-      <button
-        :disabled="pageNumber >= totalPages"
-        @click="toPNextPage"
-        class="btn btn-secondary mx-1 pagination-btn"
-      > &#8594; </button>
+        <!-- Dots -->
+        <span
+          v-if="showDots"
+          class="pagination__dots"
+        >
+          <fa-icon
+            class="pagination__dots-icon"
+            :icon="['fas', 'ellipsis-h']"
+          />
+        </span>
 
-      <!-- Last Btn -->
-      <button
-        :disabled="pageNumber >= totalPages"
-        @click="toLastPage"
-        class="btn btn-secondary mx-1 pagination-btn"
-      > &gt;&gt; </button>
+        <!-- Number Btns -->
+        <span
+          class="pagination__number"
+          v-for="(item, index) in totalPages"
+          :key="index"
+        >
+          <button
+            v-if="isBtnVIsible(item)"
+            @click="pageNumber = index + 1"
+            :class="['pagination__btn', 'number', pageNumber === index + 1 ? 'active' : '' ] "
+          >{{index + 1}}</button>
+        </span>
+
+        <!-- Dots -->
+        <span
+          v-if="showDots"
+          class="pagination__dots"
+        >
+          <fa-icon
+            class="pagination__dots-icon"
+            :icon="['fas', 'ellipsis-h']"
+          />
+        </span>
+
+        <!-- Next Btn -->
+        <button
+          :disabled="pageNumber >= totalPages"
+          @click="toPNextPage"
+          class="pagination__btn next"
+        >
+          <fa-icon
+            class="pagination__btn-icon"
+            :icon="['fas', 'arrow-right']"
+          />
+        </button>
+
+        <!-- Last Btn -->
+        <button
+          :disabled="pageNumber >= totalPages"
+          @click="toLastPage"
+          class="pagination__btn last"
+        >
+          <fa-icon
+            class="pagination__btn-icon"
+            :icon="['fas', 'angle-double-right']"
+          />
+        </button>
+      </div>
     </div>
 
+    <!-- List of countries -->
     <slot
       name="data"
       :pageNumber="pageNumber"
@@ -122,31 +157,102 @@ export default {
       return this.visibleNumbers.includes(item)
     }
   },
-  computed: {
-
-  },
+  // computed: {
+  //   regionCountrise () {
+  //     return this.$store.state.regionCountrise
+  //   }
+  // },
   watch: {
     pageNumber () {
       this.shortenPaginationList()
     },
     totalPages () {
       this.shortenPaginationList()
+    },
+    $route (to, from) {
+      if (to.name === 'Home' || to.name === 'Region') {
+        this.pageNumber = 1
+      }
     }
   },
   mounted () {
     this.shortenPaginationList()
   }
-  // props: ['pageNumber']
 }
 </script>
 
-<style scoped>
-.btn.pagination-btn.active {
-  background-color: #d61877;
-  border-color: #d61877;
-  cursor: auto;
+<style lang="scss">
+.pagination__sec {
+  padding: 50px 0px;
 }
-.pagination-row {
-  padding: 10px;
+
+.pagination__desc {
+  margin-bottom: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+.pagination__row {
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pagination__btn {
+  border-radius: 4px;
+  display: block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
+  background-color: var(--color-bg);
+  margin-bottom: 10px;
+  margin-right: 10px;
+  &.active {
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    border-color: var(--color-text);
+    &:disabled,
+    &[disabled] {
+      opacity: 1;
+      cursor: initial;
+    }
+  }
+
+  /*background-color:var(--rgb-color-text);*/
+  &:hover:not([disabled]),
+  &:focus:not([disabled]) {
+    cursor: pointer;
+    color: var(--color-bg);
+    border-color: var(--color-text);
+    background-color: rgba(var(--rgb-color-text), 0.8);
+  }
+  &:disabled,
+  &[disabled] {
+    opacity: 0.5;
+    cursor: initial;
+  }
+  &.number {
+  }
+}
+
+.pagination__number {
+  display: none;
+  @include mq("sm") {
+    display: block;
+  }
+}
+
+.pagination__dots {
+  padding: 0 20px;
+  line-height: 40px;
+  display: none;
+
+  @include mq("md") {
+    display: block;
+  }
 }
 </style>

@@ -17,8 +17,8 @@ export default new Vuex.Store({
     grtRegCountriseChunks: (state) => (perPage) => {
       return transformCountriesList(state.regionCountrise, perPage)
     },
-    getTest: (state) => (x) => {
-      return x
+    getCountryById: (state) => (id) => {
+      return state.allCountrise.find(country => country.alpha3Code === id)
     },
     getAllCountries: state => {
       return state.allCountrise

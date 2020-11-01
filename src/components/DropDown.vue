@@ -4,6 +4,7 @@
     <div
       class='dropdown'
       v-bind:class='{ show : isOpen }'
+      v-on-clickaway="away"
     >
       <a
         href='#'
@@ -21,20 +22,20 @@
         name='fade'
         appear
       >
-        <div
+        <ul
           class='dropdown__menu'
           v-if='isOpen'
         >
-
-          <a
-            v-for='(region , index) in regionsList'
-            :key='index'
-            class="dropdown__item"
-            href='#'
-            @click.prevent='selectRegionFromDropdown(region)'
-          >{{region.name}}</a>
-
-        </div>
+          <li>
+            <a
+              v-for='(region , index) in regionsList'
+              :key='index'
+              class="dropdown__item"
+              href='#'
+              @click.prevent='selectRegionFromDropdown(region)'
+            >{{region.name}}</a>
+          </li>
+        </ul>
       </transition>
     </div>
 
@@ -42,9 +43,9 @@
 </template>
 
 <script>
-// import {mixin as clickaway} from 'vue-clickaway';
+import { mixin as clickaway } from 'vue-clickaway'
 export default {
-  // mixins: [clickaway],
+  mixins: [clickaway],
   name: 'DropDown',
   data () {
     return {
@@ -73,24 +74,17 @@ export default {
     }
   },
   mounted () {
-    // this.regionsList = this.regions
-    if (this.$route.name === 'Region' && this.$route.params.slug && !this.$route.query.pageIndex) {
+    if (this.$route.name === 'Region' && this.$route.params.slug) {
       const slug = this.$route.params.slug
       this.setSelected(this.regions.find(r => r.slug === slug))
-    } else if (this.$route.name === 'Region' && this.$route.query.pageIndex) {
-      const slug = this.$route.params.slug
-      this.setSelected(this.regions.find(r => r.slug === slug), this.$route.query.pageIndex)
     } else if (this.$route.name === 'Home') {
       this.regionsList = this.regions
     }
   },
   methods: {
     setDropdown (region) {
-      console.log('region: ', region)
-
       let filteredRegionList = []
       if (region.slug !== 'all') {
-        // this.$router.push({ name: 'Region', params: { slug: region.slug } })
         this.selectTitle = region.name
         // remove selected
         filteredRegionList = this.regions.filter((e) => {
@@ -98,7 +92,6 @@ export default {
         })
         // add 'all' item
         filteredRegionList.unshift({ name: 'Select all', slug: 'all' })
-        this.getRegionData(region.slug)
       } else {
         this.selectTitle = 'Filter by Region'
         filteredRegionList = this.regions
@@ -112,17 +105,11 @@ export default {
         return e.name !== region.name
       })
       filteredRegionList.unshift({ name: 'Select all', slug: 'all' })
-      // this.$store.dispatch('pageNum', page_number)
       this.regionsList = filteredRegionList
-    },
-    getRegionData (slug) {
-      // this.$store.dispatch('getCountriesByRegion', slug)
     },
     selectRegionFromDropdown (region) {
       this.toggleDropdown()
       this.setDropdown(region)
-      // console.log('region: ', region)
-      // this.$store.dispatch('pageNum', 0)
       if (region.slug !== 'all') {
         this.$router.push({ name: 'Region', params: { slug: region.slug } })
       } else {
@@ -131,10 +118,10 @@ export default {
     },
     toggleDropdown () {
       this.isOpen = !this.isOpen
+    },
+    away: function () {
+      this.isOpen = false
     }
-    // away: function () {
-    //     this.isOpen = false;
-    // },
   }
 }
 </script>
@@ -159,7 +146,6 @@ export default {
   fill: var(--color-text);
 }
 .dropdown__menu {
-  background-color: #fff;
   text-align: left;
   width: 100%;
   display: block;
@@ -169,7 +155,7 @@ export default {
   border-radius: 4px;
   padding: 10px 0;
   /*display: none;*/
-  // background-color: var(--color-bg);
+  background-color: var(--color-bg);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08), 0 3px 6px rgba(0, 0, 0, 0.15);
   /*background-color: red;*/
 }

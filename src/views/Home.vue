@@ -1,17 +1,16 @@
 <template>
   <div class="home">
-   <div class="mb-3">
-
-   </div>
-
-    <MyPagination :totalPages="allCountriseChunks.totalPages">
-      <template #data="{pageNumber}">
-        <CountriesList
-          :pageNumber="pageNumber"
-          :countries="allCountriseChunks"
-        ></CountriesList>
-      </template>
-    </MyPagination>
+    <ListHeader></ListHeader>
+    <div class="container">
+      <MyPagination :totalPages="allCountriseChunks.totalPages">
+        <template #data="{pageNumber}">
+          <CountriesList
+            :pageNumber="pageNumber"
+            :countries="allCountriseChunks"
+          ></CountriesList>
+        </template>
+      </MyPagination>
+    </div>
 
   </div>
 </template>
@@ -20,6 +19,7 @@
 
 import CountriesList from '@/components/CountriesList.vue'
 import MyPagination from '@/components/MyPagination.vue'
+import ListHeader from '@/components/ListHeader.vue'
 
 export default {
   name: 'Home',
@@ -30,7 +30,8 @@ export default {
   },
   components: {
     CountriesList,
-    MyPagination
+    MyPagination,
+    ListHeader
   },
   mounted () {
   },
