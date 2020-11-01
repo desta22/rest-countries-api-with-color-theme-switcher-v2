@@ -1,26 +1,12 @@
 <template>
   <div class="country-box">
-    <!-- <div class="country-box">
-      <div
-        class="flag"
-        :style="{ backgroundImage: 'url(' + country.flag + ')' }"
-      >
-      </div>
-      <div class="name">
-        {{country.name}}
-      </div>
-      <div class="index">
-        {{country.index}}
-      </div>
-    </div> -->
-
     <router-link
       :to="'/country/'+countryCode"
       class="country-box__link"
     >
-     <div class="index">
+      <!-- <div class="index">
         {{country.index}}
-      </div>
+      </div> -->
       <div
         class="country-box__flag"
         v-bind:style="{ backgroundImage: 'url(' + country.flag + ')' }"
