@@ -14,3 +14,4 @@ shell_exec('git push origin master');
 shell_exec('git checkout '.$branch);
 
 fwrite(STDOUT, "\n----- Publishing $branch successful -----\n\n");
+
